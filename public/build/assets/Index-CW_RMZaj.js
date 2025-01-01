@@ -1,0 +1,1 @@
+import{j as e}from"./app-B6FdJU4c.js";function a(){return e.jsx("div",{className:"py-12 theme-dracula",children:e.jsx("div",{className:"mx-auto max-w-7xl sm:px-6 lg:px-8",children:e.jsx("div",{className:"overflow-hidden bg-white shadow-sm sm:rounded-lg",children:e.jsx("div",{className:"p-6 text-gray-900",children:"You're logged in!"})})})})}export{a as default};
