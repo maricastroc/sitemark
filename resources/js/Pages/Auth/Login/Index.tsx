@@ -1,8 +1,11 @@
-import { WelcomeContainer } from '@/Components/WelcomeContainer/Index';
-import { Head, Link } from '@inertiajs/react';
+import { WelcomeContainer } from '@/Components/Container';
+import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 import axios from 'axios';
 import { notyf } from '@/libs/notyf';
+import Logo from '@/assets/logo.svg';
+import { InputField } from '@/Components/InputField';
+import { RedirectContainer } from '@/Components/RedirectContainer';
 
 interface LoginFormData {
   email: string;
@@ -48,69 +51,45 @@ export default function Login() {
   return (
     <>
       <Head title="Login" />
-      <div className="flex flex-col md:grid md:grid-cols-2 bg-base-100 theme-dracula">
-        <WelcomeContainer />
+      <div className="flex flex-col bg-background-primary md:grid md:grid-cols-2">
+        <div className="hidden md:flex">
+          <WelcomeContainer />
+        </div>
 
-        <div className="flex items-center justify-center px-4 bg-base-100 md:bg-white hero lg:px-10">
-          <div className="w-full max-w-lg hero-content">
-            <form onSubmit={handleSubmit} className="w-full">
-              <div className="w-full card bg-base-100 md:shadow-xl">
-                <div className="py-6 card-body">
-                  <label className="w-full form-control">
-                    <div className="label">
-                      <span className="text-gray-100 label-text text-md">
-                        Your email:
-                      </span>
-                    </div>
-                    <input
-                      type="text"
-                      name="email"
-                      value={data.email}
-                      onChange={(e) =>
-                        setData({ ...data, email: e.target.value })
-                      }
-                      placeholder="user@email.com"
-                      className="w-full text-gray-100 input input-bordered"
-                    />
-                    {errors?.email && (
-                      <span className="mt-1 text-sm text-red-500">
-                        {errors?.email}
-                      </span>
-                    )}
-                  </label>
-                  <label className="w-full form-control">
-                    <div className="label">
-                      <span className="text-gray-100 label-text text-md">
-                        Your password:
-                      </span>
-                    </div>
-                    <input
-                      type="password"
-                      name="password"
-                      value={data.password}
-                      onChange={(e) =>
-                        setData({ ...data, password: e.target.value })
-                      }
-                      placeholder="password"
-                      className="w-full text-gray-100 input input-bordered"
-                    />
-                    {errors?.password && (
-                      <span className="mt-1 text-sm text-red-500">
-                        {errors?.password}
-                      </span>
-                    )}
-                  </label>
-                  <div className="w-full mt-4 card-actions">
-                    <button className="text-xs font-semibold tracking-widest uppercase btn btn-secondary btn-block">
-                      Login
-                    </button>
-                    <Link
-                      href="/register"
-                      className="text-gray-100 btn btn-link btn-secondary btn-block"
-                    >
-                      or sign up here
-                    </Link>
-                  </div>
+        <div className="flex items-center justify-center px-4 py-8 lg:py-0 bg-background-primary hero lg:px-10">
+          <div className="flex flex-col w-full max-w-lg hero-content">
+            <img src={Logo} alt="Logo" />
+            <form onSubmit={handleSubmit} className="max-w-[25rem]">
+              <div className="w-full card bg-background-primary md:shadow-xl">
+                <div className="flex flex-col gap-2 py-3">
+                  <InputField
+                    label="E-mail"
+                    type="text"
+                    placeholder="Your email here"
+                    value={data.email}
+                    onChange={(e) =>
+                      setData({ ...data, email: e.target.value })
+                    }
+                    error={errors?.email}
+                  />
+
+                  <InputField
+                    label="Password"
+                    type="password"
+                    placeholder="Your password here"
+                    value={data.password}
+                    onChange={(e) =>
+                      setData({ ...data, password: e.target.value })
+                    }
+                    error={errors?.password}
+                  />
+
+                  <RedirectContainer
+                    redirectLink="/register"
+                    text="Sign up here"
+                    title="Don't have an account?"
+                    buttonContent="Access Acount"
+                  />
                 </div>
               </div>
             </form>

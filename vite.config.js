@@ -9,5 +9,6 @@ export default defineConfig({
       refresh: true
     }),
     react()
-  ]
+  ],
+  assetsInclude: ['**/*.jpeg', '**/*.jpg', '**/*.png', '**/*.svg', '**/*.gif']
 });
