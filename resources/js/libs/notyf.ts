@@ -1,5 +1,5 @@
-import { Notyf } from 'notyf'
-import 'notyf/notyf.min.css'
+import { Notyf } from 'notyf';
+import 'notyf/notyf.min.css';
 
 export const notyf =
   typeof window !== 'undefined'
@@ -7,17 +7,17 @@ export const notyf =
         duration: 5000,
         position: {
           x: 'right',
-          y: 'top',
+          y: 'top'
         },
         types: [
           {
             type: 'success',
-            background: '#201f24',
+            background: '#15803d'
           },
           {
             type: 'error',
-            background: '#c94736',
-          },
-        ],
+            background: '#c94736'
+          }
+        ]
       })
-    : null
+    : null;
