@@ -5,6 +5,7 @@ import { PlusCircle } from 'phosphor-react';
 import { AddLinkModal } from '@/Components/AddLinkModal';
 import * as Dialog from '@radix-ui/react-dialog';
 import { useState } from 'react';
+import { ActionButton } from '@/Components/ActionButton';
 
 export default function Dashboard() {
   const [isAddLinkModalOpen, setIsAddLinkModalOpen] = useState(false);
@@ -44,15 +45,18 @@ export default function Dashboard() {
         </div>
 
         <div className="flex items-center justify-center w-full gap-3 mt-10">
-          <button className="flex items-center justify-center w-[2.2rem] h-[2.2rem] rounded-full text-content-inverse bg-accent-orange">
+        <ActionButton isActive>
             <List />
-          </button>
-          <button className="flex font-bold items-center justify-center w-[2.2rem] h-[2.2rem] rounded-full text-content-inverse bg-transparent text-content-primary">
+            </ActionButton>
+          <ActionButton isActive={false}>
             <UserCircle />
-          </button>
-          <button className="flex items-center justify-center w-[2.2rem] h-[2.2rem] rounded-full text-content-inverse bg-transparent text-content-primary">
-            <LogOut />
-          </button>
+            </ActionButton>
+          <form action="/logout" method="POST">
+            <input type="hidden" name="_token" value={csrfToken} />
+            <ActionButton isActive={false}>
+              <LogOut />
+            </ActionButton>
+          </form>
         </div>
       </div>
     </div>
