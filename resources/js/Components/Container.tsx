@@ -1,4 +1,4 @@
-import BackgroundImage from '../../assets/background_image.jpg';
+import BackgroundImage from '../assets/background_image.jpg';
 
 export function WelcomeContainer() {
   return (
