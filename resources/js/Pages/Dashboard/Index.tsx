@@ -1,4 +1,4 @@
-import Logo from '@/assets/logo.svg';
+import Logo from '/public/assets/logo.svg';
 import { Link } from './partials/Link';
 import { LogOut, UserCircle, List } from 'iconoir-react';
 import { PlusCircle } from 'phosphor-react';
@@ -7,9 +7,19 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { useState } from 'react';
 import { ActionButton } from '@/Components/ActionButton';
 
-export default function Dashboard() {
-  const [isAddLinkModalOpen, setIsAddLinkModalOpen] = useState(false);
+interface DashboardProps {
+  links: {
+    id: number;
+    platform: string;
+    url: string;
+    name: string;
+    photo_url: string;
+  }[];
+}
 
+export default function Dashboard({ links }: DashboardProps) {
+  const [isAddLinkModalOpen, setIsAddLinkModalOpen] = useState(false);
+console.log(links)
   const csrfToken = (
     document.head.querySelector('meta[name="csrf-token"]') as HTMLMetaElement
   )?.content;
@@ -40,7 +50,11 @@ export default function Dashboard() {
           </div>
 
           <div className="flex flex-col items-center mt-10">
-            <Link />
+            {links?.map((link) => {
+              return (
+                <Link key={link.id} name={link.name} platform={link.platform} url={link.url} photo_url={link.photo_url} />
+              )
+            })}
           </div>
         </div>
 

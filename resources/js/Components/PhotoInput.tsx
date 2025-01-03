@@ -47,6 +47,7 @@ export const PhotoInput = ({
         <Label content="Link Photo" />
         <Input
           type="file"
+          name='photo_url'
           ref={inputFileRef}
           style={{ display: 'none' }}
           onChange={onChange}

@@ -12,14 +12,14 @@ interface AddLinkFormData {
   title: string;
   platform: string;
   url: string;
-  photoUrl: File | null;
+  photo_url: File | null;
 }
 
 interface AddLinkFormErrors {
   title?: string;
   platform?: string;
   url?: string;
-  photoUrl?: string;
+  photo_url?: string;
 }
 
 interface AddLinkModalProps {
@@ -35,7 +35,7 @@ export function AddLinkModal({ onClose }: AddLinkModalProps) {
     title: '',
     platform: '',
     url: '',
-    photoUrl: null
+    photo_url: null
   });
 
   const [errors, setErrors] = useState<AddLinkFormErrors>({});
@@ -44,7 +44,7 @@ export function AddLinkModal({ onClose }: AddLinkModalProps) {
     const file = event.target.files?.[0];
 
     if (file) {
-      setData({ ...data, photoUrl: file });
+      setData({ ...data, photo_url: file });
       const reader = new FileReader();
       reader.onload = () => setphotoPreview(reader.result as string);
       reader.readAsDataURL(file);
@@ -53,9 +53,34 @@ export function AddLinkModal({ onClose }: AddLinkModalProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+  
+    const formData = new FormData();
+    
+    formData.append('name', data.title);
+    formData.append('platform', data.platform);
+    formData.append('url', data.url);
 
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+  
+    if (data.photo_url) {
+      formData.append('photo_url', data.photo_url);
+    }
+  
     try {
-      const response = await axios.post('/login', data);
+      const response = await axios.post('/link', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      if (response?.data.message) {
+        await new Promise((resolve) => {
+          notyf?.success(response?.data?.message);
+          setTimeout(resolve, 2000);
+        });
+      }
 
       if (response.data.redirect) {
         window.location.href = response.data.redirect;
@@ -63,7 +88,7 @@ export function AddLinkModal({ onClose }: AddLinkModalProps) {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         setErrors(error.response?.data.errors || {});
-
+  
         if (error.response?.data.errors?.message) {
           notyf?.error(error.response?.data.errors?.message);
         }
@@ -100,14 +125,15 @@ export function AddLinkModal({ onClose }: AddLinkModalProps) {
                 <PhotoInput
                   photoPreview={photoPreview}
                   onChange={handleAvatarChange}
-                  error={errors?.photoUrl}
+                  error={errors?.photo_url}
                   inputFileRef={
                     inputFileRef as React.RefObject<HTMLInputElement>
                   }
                 />
 
                 <InputField
-                  label="E-mail"
+                  label="Name"
+                  name='name'
                   type="text"
                   placeholder="Link Title"
                   value={data.title}
@@ -117,22 +143,28 @@ export function AddLinkModal({ onClose }: AddLinkModalProps) {
 
                 <div className="flex flex-col items-start mt-3">
                   <Label content="Streaming Platform" />
-                  <select className="w-full border-2 border-zinc-800 select bg-background-secondary">
-                    <option disabled selected>
+                  <select
+                    name="platform"
+                    className="w-full border-2 border-zinc-800 select bg-background-secondary"
+                    value={data.platform}
+                    onChange={(e) => setData({ ...data, platform: e.target.value })}  // Atualiza o estado com o valor selecionado
+                  >
+                    <option disabled value="">
                       Streaming Platform
                     </option>
-                    <option>Prime Video</option>
-                    <option>MAX</option>
-                    <option>Netflix</option>
-                    <option>Paramount</option>
-                    <option>Disney+</option>
-                    <option>Apple TV</option>
+                    <option value="Prime Video">Prime Video</option>
+                    <option value="MAX">MAX</option>
+                    <option value="Netflix">Netflix</option>
+                    <option value="Paramount">Paramount</option>
+                    <option value="Disney+">Disney+</option>
+                    <option value="Apple TV">Apple TV</option>
                   </select>
                 </div>
 
                 <InputField
                   label="Link URL"
                   type="text"
+                  name='url'
                   placeholder="Paste link URL here"
                   value={data.url}
                   onChange={(e) => setData({ ...data, url: e.target.value })}

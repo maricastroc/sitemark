@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 import axios from 'axios';
 import { notyf } from '@/libs/notyf';
-import Logo from '@/assets/logo.svg';
+import Logo from '/public/assets/logo.svg';
 import { InputField } from '@/Components/InputField';
 import { RedirectContainer } from '@/Components/RedirectContainer';
 
@@ -34,6 +34,7 @@ export default function Register() {
 
     try {
       const response = await axios.post('/register', data);
+      
       if (response?.data.message) {
         await new Promise((resolve) => {
           notyf?.success(response?.data?.message);
@@ -73,6 +74,7 @@ export default function Register() {
                 <div className="flex flex-col gap-2 py-3">
                   <InputField
                     label="Name"
+                    name='name'
                     type="text"
                     placeholder="Your name here"
                     value={data.name}
@@ -82,6 +84,7 @@ export default function Register() {
 
                   <InputField
                     label="E-mail"
+                    name='email'
                     type="text"
                     placeholder="Your email here"
                     value={data.email}
@@ -93,6 +96,7 @@ export default function Register() {
 
                   <InputField
                     label="Password"
+                    name='password'
                     type="password"
                     placeholder="Your password here"
                     value={data.password}

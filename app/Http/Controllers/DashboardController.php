@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Link;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -9,6 +10,10 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        return Inertia::render('Dashboard/Index');
+        $links = Link::orderBy('created_at', 'desc')->get();
+
+        return Inertia::render('Dashboard/Index', [
+            'links' => $links,
+        ]);
     }
 }

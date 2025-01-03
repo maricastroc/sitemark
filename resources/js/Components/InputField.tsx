@@ -6,12 +6,14 @@ export const InputField = ({
   label,
   type,
   value,
+  name,
   onChange,
   placeholder,
   error
 }: {
   label: string;
   type: string;
+  name: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
@@ -21,6 +23,7 @@ export const InputField = ({
     <Label content={label} />
     <Input
       type={type}
+      name={name}
       value={value}
       onChange={onChange}
       placeholder={placeholder}

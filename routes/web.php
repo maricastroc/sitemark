@@ -4,7 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
-
+use App\Http\Controllers\LinkController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -22,4 +22,6 @@ Route::middleware('auth')->group(function() {
     Route::get('/', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
     Route::post('/logout', LogoutController::class);
+
+    Route::post('/link', [LinkController::class, 'store']);
 });
