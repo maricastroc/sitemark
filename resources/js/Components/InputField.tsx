@@ -10,7 +10,7 @@ export const InputField = ({
   onChange,
   placeholder,
   error,
-  isLoading = false,
+  isLoading = false
 }: {
   label: string;
   type: string;

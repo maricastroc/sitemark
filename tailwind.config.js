@@ -28,6 +28,7 @@ export default {
         'accent-red': '#EB4B5B',
         'accent-blue': '#55A1F2',
         'accent-green': '#44CB93',
+        'accent-pink': '#dd61d0',
         'accent-purple': '#9D8AFE',
         'border-primary': '#161412'
       },
@@ -49,5 +50,12 @@ export default {
   plugins: [forms, require('daisyui')],
   daisyui: {
     themes: ['dracula', 'light', 'dark']
-  }
+  },
+  safelist: [
+    'bg-accent-red',
+    'bg-accent-green',
+    'bg-accent-purple',
+    'bg-accent-blue',
+    'bg-accent-pink'
+  ]
 };

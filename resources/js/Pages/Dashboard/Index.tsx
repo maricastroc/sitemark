@@ -43,18 +43,16 @@ export default function Dashboard({ links }: DashboardProps) {
                     Add new link
                   </button>
                 </Dialog.Trigger>
-                <LinkFormModal isEdit={false} onClose={() => setIsLinkFormModalOpen(false)} />
+                <LinkFormModal
+                  isEdit={false}
+                  onClose={() => setIsLinkFormModalOpen(false)}
+                />
               </Dialog.Root>
             </div>
 
-            <div className="flex flex-col items-center mt-10">
+            <div className="flex flex-col items-center gap-5 mt-1">
               {links?.map((link) => {
-                return (
-                  <Link
-                    key={link.id}
-                    link={link}
-                  />
-                );
+                return <Link key={link.id} link={link} />;
               })}
             </div>
           </div>

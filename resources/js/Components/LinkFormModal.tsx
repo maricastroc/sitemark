@@ -27,8 +27,8 @@ interface LinkFormModalErrors {
 
 interface LinkFormModalProps {
   onClose: () => void;
-  isEdit: boolean
-  linkId?: number
+  isEdit: boolean;
+  linkId?: number;
 }
 
 export function LinkFormModal({ onClose, isEdit, linkId }: LinkFormModalProps) {
@@ -36,7 +36,7 @@ export function LinkFormModal({ onClose, isEdit, linkId }: LinkFormModalProps) {
 
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const [data, setData] = useState<LinkFormModalData>({
     name: '',
@@ -72,8 +72,8 @@ export function LinkFormModal({ onClose, isEdit, linkId }: LinkFormModalProps) {
     }
 
     try {
-      setIsLoading(true)
-      
+      setIsLoading(true);
+
       const response = await axios.post('/links', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -101,7 +101,7 @@ export function LinkFormModal({ onClose, isEdit, linkId }: LinkFormModalProps) {
         console.error('Error:', error);
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -113,7 +113,7 @@ export function LinkFormModal({ onClose, isEdit, linkId }: LinkFormModalProps) {
     formData.append('name', data.name);
     formData.append('platform', data.platform);
     formData.append('url', data.url);
-    
+
     if (data.photo_url) {
       formData.append('photo_url', data.photo_url);
     }
@@ -121,8 +121,8 @@ export function LinkFormModal({ onClose, isEdit, linkId }: LinkFormModalProps) {
     formData.append('_method', 'PUT');
 
     try {
-      setIsLoading(true)
-      
+      setIsLoading(true);
+
       const response = await axios.post(`links/${linkId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -150,20 +150,25 @@ export function LinkFormModal({ onClose, isEdit, linkId }: LinkFormModalProps) {
         console.error('Error:', error);
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    const getLink = async () => { 
+    const getLink = async () => {
       try {
         const response = await axios.get(`links/${linkId}`);
-  
-        if (response?.data?.link) {
-          const link = response?.data?.link
 
-          setPhotoPreview(`storage/${link.photo_url}`)
-          setData({ ...data, name: link.name, platform: link.platform, url: link.url })
+        if (response?.data?.link) {
+          const link = response?.data?.link;
+
+          setPhotoPreview(`storage/${link.photo_url}`);
+          setData({
+            ...data,
+            name: link.name,
+            platform: link.platform,
+            url: link.url
+          });
         }
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
@@ -175,11 +180,11 @@ export function LinkFormModal({ onClose, isEdit, linkId }: LinkFormModalProps) {
         }
       }
     };
-    
+
     if (linkId) {
-      getLink()
+      getLink();
     }
-  }, [linkId])
+  }, [linkId]);
 
   return (
     <Dialog.Portal>
@@ -202,7 +207,10 @@ export function LinkFormModal({ onClose, isEdit, linkId }: LinkFormModalProps) {
         </Dialog.Title>
 
         <div className="flex flex-col w-full">
-          <form onSubmit={isEdit ? handleUpdateLink : handleCreateLink} className="bg-background-secondary">
+          <form
+            onSubmit={isEdit ? handleUpdateLink : handleCreateLink}
+            className="bg-background-secondary"
+          >
             <div className="w-full bg-background-secondary md:shadow-xl">
               <div className="flex flex-col gap-2 py-3">
                 <PhotoInput
@@ -251,7 +259,10 @@ export function LinkFormModal({ onClose, isEdit, linkId }: LinkFormModalProps) {
             </div>
 
             <div className="flex items-center justify-center mt-6">
-              <PrimaryButton disabled={isLoading} content={isEdit ? 'Save Changes' : 'Create Link'} />
+              <PrimaryButton
+                disabled={isLoading}
+                content={isEdit ? 'Save Changes' : 'Create Link'}
+              />
             </div>
           </form>
         </div>
