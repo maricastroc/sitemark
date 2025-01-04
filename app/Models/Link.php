@@ -38,4 +38,19 @@ class Link extends Model
 
         return self::create($data);
     }
+
+    /**
+     * Update an existing link with a new photo (if provided).
+     */
+    public static function updateWithPhoto(Link $link, array $data)
+    {
+        if (isset($data['photo_url']) && $data['photo_url']->isValid()) {
+            $photoUrlPath = $data['photo_url']->store('assets/series', 'public');
+            $data['photo_url'] = $photoUrlPath;
+        }
+
+        $link->update($data);
+
+        return $link;
+    }
 }

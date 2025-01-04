@@ -31,9 +31,9 @@ export const PhotoInput = ({
             type="button"
             onClick={() => {
               if (inputFileRef.current) {
-                inputFileRef.current.click(); // Simula o clique no input escondido
+                inputFileRef.current.click();
               } else {
-                console.error('inputFileRef está nulo.');
+                console.error('inputFileRef is null.');
               }
             }}
             className="absolute hover:bg-gray-500 cursor-pointer top-[80%] left-[100%] flex items-center justify-center bg-gray-900 border border-gray-500 rounded-full text-gray-100 w-[1.9rem] h-[1.9rem] sm:left-[68%]"
@@ -47,13 +47,13 @@ export const PhotoInput = ({
         <Label content="Link Photo" />
         <Input
           type="file"
-          name='photo_url'
+          name="photo_url"
           ref={inputFileRef}
           style={{ display: 'none' }}
           onChange={onChange}
         />
         <span className="flex items-center justify-start w-full overflow-hidden text-gray-100 truncate border-2 text-md input border-zinc-800 bg-background-secondary text-ellipsis whitespace-nowrap">
-          <p className="max-w-[15rem] truncate text-content-secondary">
+          <p className="max-w-[20rem] truncate text-content-secondary">
             {photoPreview || 'No file selected'}
           </p>
         </span>

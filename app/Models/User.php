@@ -61,4 +61,9 @@ class User extends Authenticatable
             'password' => Hash::make($data['password']),
         ]);
     }
+
+    public function links()
+    {
+        return $this->hasMany(Link::class);
+    }
 }

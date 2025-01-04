@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LinkRequest;
-use App\Http\Requests\UpdateLinkRequest;
 use App\Models\Link;
+use Illuminate\Support\Facades\Log;
 
 class LinkController extends Controller
 {
@@ -43,9 +43,17 @@ class LinkController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateLinkRequest $request, Link $link)
+    public function update(LinkRequest $request, Link $link)
     {
-        //
+        $data = $request->validated();
+
+        Link::updateWithPhoto($link, $data);
+    
+        return response()->json([
+            'redirect' => route('dashboard'),
+            'message' => 'Link successfully updated!',
+            'link' => $link,
+        ]);
     }
 
     /**

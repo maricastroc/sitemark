@@ -1,7 +1,7 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { X } from 'phosphor-react';
 import { InputField } from './InputField';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { notyf } from '@/libs/notyf';
 import { Label } from './Label';
@@ -9,38 +9,43 @@ import { PrimaryButton } from './PrimaryButton';
 import { PhotoInput } from './PhotoInput';
 import { SelectInput } from './SelectInput';
 import { Error } from './Error';
+import { LinkProps } from '@/types/link';
 
-interface AddLinkFormData {
+interface LinkFormModalData {
   name: string;
   platform: string;
   url: string;
   photo_url: File | null;
 }
 
-interface AddLinkFormErrors {
+interface LinkFormModalErrors {
   name?: string;
   platform?: string;
   url?: string;
   photo_url?: string;
 }
 
-interface AddLinkModalProps {
+interface LinkFormModalProps {
   onClose: () => void;
+  isEdit: boolean
+  link?: LinkProps | null
 }
 
-export function AddLinkModal({ onClose }: AddLinkModalProps) {
+export function LinkFormModal({ onClose, isEdit, link }: LinkFormModalProps) {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
-  const [photoPreview, setphotoPreview] = useState<string | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
 
-  const [data, setData] = useState<AddLinkFormData>({
-    name: '',
-    platform: '',
-    url: '',
+  const [isLoading, setIsLoading] = useState(false)
+
+  const [data, setData] = useState<LinkFormModalData>({
+    name: link ? link.name : '',
+    platform: link ? link.platform : '',
+    url: link ? link.url : '',
     photo_url: null
   });
-
-  const [errors, setErrors] = useState<AddLinkFormErrors>({});
+  console.log(link, data)
+  const [errors, setErrors] = useState<LinkFormModalErrors>({});
 
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -48,35 +53,33 @@ export function AddLinkModal({ onClose }: AddLinkModalProps) {
     if (file) {
       setData({ ...data, photo_url: file });
       const reader = new FileReader();
-      reader.onload = () => setphotoPreview(reader.result as string);
+      reader.onload = () => setPhotoPreview(reader.result as string);
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateLink = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     const formData = new FormData();
-    
+
     formData.append('name', data.name);
     formData.append('platform', data.platform);
     formData.append('url', data.url);
 
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-  
     if (data.photo_url) {
       formData.append('photo_url', data.photo_url);
     }
-  
+
     try {
-      const response = await axios.post('/link', formData, {
+      setIsLoading(true)
+      
+      const response = await axios.post('/links', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+          'Content-Type': 'multipart/form-data'
+        }
       });
-  
+
       if (response?.data.message) {
         await new Promise((resolve) => {
           notyf?.success(response?.data?.message);
@@ -90,15 +93,73 @@ export function AddLinkModal({ onClose }: AddLinkModalProps) {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         setErrors(error.response?.data.errors || {});
-  
+
         if (error.response?.data?.message) {
           notyf?.error(error.response?.data?.message);
         }
       } else {
         console.error('Error:', error);
       }
+    } finally {
+      setIsLoading(false)
     }
   };
+
+  const handleUpdateLink = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    formData.append('name', data.name);
+    formData.append('platform', data.platform);
+    formData.append('url', data.url);
+    
+    if (data.photo_url) {
+      formData.append('photo_url', data.photo_url);
+    }
+
+    formData.append('_method', 'PUT');
+
+    try {
+      setIsLoading(true)
+      
+      const response = await axios.post(`links/${link?.id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      if (response?.data.message) {
+        await new Promise((resolve) => {
+          notyf?.success(response?.data?.message);
+          setTimeout(resolve, 2000);
+        });
+      }
+
+      if (response.data.redirect) {
+        window.location.href = response.data.redirect;
+      }
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setErrors(error.response?.data.errors || {});
+
+        if (error.response?.data?.message) {
+          notyf?.error(error.response?.data?.message);
+        }
+      } else {
+        console.error('Error:', error);
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  };
+
+  useEffect(() => {
+    if (link) {
+      setPhotoPreview(`storage/${link.photo_url}`)
+      setData({ ...data, name: link.name, platform: link.platform, url: link.url })
+    }
+  }, [link])
 
   return (
     <Dialog.Portal>
@@ -116,12 +177,12 @@ export function AddLinkModal({ onClose }: AddLinkModalProps) {
         </Dialog.Close>
 
         <Dialog.Title className="relative font-bold text-heading-small text-content-primary">
-          Add Link
+          {isEdit ? 'Edit Link' : 'Add Link'}
           <span className="absolute bottom-0 left-0 w-[1.5rem] h-[0.2rem] bg-accent-orange"></span>
         </Dialog.Title>
 
-        <Dialog.Description className="flex flex-col w-full">
-          <form onSubmit={handleSubmit} className="bg-background-secondary">
+        <div className="flex flex-col w-full">
+          <form onSubmit={isEdit ? handleUpdateLink : handleCreateLink} className="bg-background-secondary">
             <div className="w-full bg-background-secondary md:shadow-xl">
               <div className="flex flex-col gap-2 py-3">
                 <PhotoInput
@@ -135,37 +196,45 @@ export function AddLinkModal({ onClose }: AddLinkModalProps) {
 
                 <InputField
                   label="Name"
-                  name='name'
+                  name="name"
                   type="text"
                   placeholder="Link name"
                   value={data.name}
                   onChange={(e) => setData({ ...data, name: e.target.value })}
                   error={errors?.name}
+                  isLoading={isLoading}
                 />
 
                 <div className="flex flex-col items-start mt-3">
                   <Label content="Streaming Platform" />
-                  <SelectInput onChange={(e) => setData({ ...data, platform: e.target.value })} value={data.platform} />
+                  <SelectInput
+                    onChange={(e) =>
+                      setData({ ...data, platform: e.target.value })
+                    }
+                    disabled={isLoading}
+                    value={data.platform}
+                  />
                   {errors?.platform && <Error content={errors.platform} />}
                 </div>
 
                 <InputField
                   label="Link URL"
                   type="text"
-                  name='url'
+                  name="url"
                   placeholder="Paste link URL here"
                   value={data.url}
                   onChange={(e) => setData({ ...data, url: e.target.value })}
                   error={errors?.url}
+                  isLoading={isLoading}
                 />
               </div>
             </div>
 
             <div className="flex items-center justify-center mt-6">
-              <PrimaryButton content="Add Link" />
+              <PrimaryButton disabled={isLoading} content={isEdit ? 'Save Changes' : 'Create Link'} />
             </div>
           </form>
-        </Dialog.Description>
+        </div>
       </Dialog.Content>
     </Dialog.Portal>
   );

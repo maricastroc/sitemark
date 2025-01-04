@@ -9,7 +9,8 @@ export const InputField = ({
   name,
   onChange,
   placeholder,
-  error
+  error,
+  isLoading,
 }: {
   label: string;
   type: string;
@@ -18,11 +19,13 @@ export const InputField = ({
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   error?: string;
+  isLoading: boolean;
 }) => (
   <div className="flex flex-col items-start mt-3">
     <Label content={label} />
     <Input
       type={type}
+      disabled={isLoading}
       name={name}
       value={value}
       onChange={onChange}

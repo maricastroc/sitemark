@@ -1,8 +1,9 @@
 import React, { forwardRef } from 'react';
 
-interface SelectInputProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectInputProps
+  extends React.SelectHTMLAttributes<HTMLSelectElement> {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  value: string
+  value: string;
 }
 
 export const SelectInput = forwardRef<HTMLSelectElement, SelectInputProps>(
@@ -15,17 +16,17 @@ export const SelectInput = forwardRef<HTMLSelectElement, SelectInputProps>(
         value={value}
         onChange={onChange}
         {...props}
-    >
-      <option value="" disabled>
-    Select a platform...
-  </option>
-      <option value="Prime Video">Prime Video</option>
-      <option value="MAX">MAX</option>
-      <option value="Netflix">Netflix</option>
-      <option value="Paramount">Paramount</option>
-      <option value="Disney+">Disney+</option>
-      <option value="Apple TV">Apple TV</option>
-    </select>
+      >
+        <option value="" disabled>
+          Select a platform...
+        </option>
+        <option value="Prime Video">Prime Video</option>
+        <option value="MAX">MAX</option>
+        <option value="Netflix">Netflix</option>
+        <option value="Paramount">Paramount</option>
+        <option value="Disney+">Disney+</option>
+        <option value="Apple TV">Apple TV</option>
+      </select>
     );
   }
 );

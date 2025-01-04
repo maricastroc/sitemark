@@ -19,9 +19,11 @@ Route::middleware('guest')->group(function() {
 });
 
 Route::middleware('auth')->group(function() {
-    Route::get('/', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::post('/logout', LogoutController::class);
 
-    Route::post('/link', [LinkController::class, 'store'])->middleware('auth')->name('link');
+    Route::post('/links', [LinkController::class, 'store']);
+
+    Route::put('/links/{link}', [LinkController::class, 'update']);
 });

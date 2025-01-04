@@ -64,7 +64,7 @@ export default function Login() {
                 <div className="flex flex-col gap-2 py-3">
                   <InputField
                     label="E-mail"
-                    name='email'
+                    name="email"
                     type="text"
                     placeholder="Your email here"
                     value={data.email}
@@ -76,7 +76,7 @@ export default function Login() {
 
                   <InputField
                     label="Password"
-                    name='password'
+                    name="password"
                     type="password"
                     placeholder="Your password here"
                     value={data.password}
