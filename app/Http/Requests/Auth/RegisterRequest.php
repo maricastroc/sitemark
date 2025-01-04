@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
@@ -28,11 +27,5 @@ class RegisterRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'unique:users,email'],
             'password' => ['required', 'string', Password::defaults()],
         ];
-    }
-
-    public function attempt(): bool {
-        User::query()->create($this->validated());
-        
-        return true;
     }
 }

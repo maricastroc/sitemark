@@ -20,5 +20,22 @@ class Link extends Model
         'url',
         'platform',
         'photo_url',
+        'user_id',
     ];
+
+    /**
+     * Create a new link.
+     */
+    public static function createWithPhoto(array $data, $userId)
+    {
+        $data['user_id'] = $userId;
+
+        if (isset($data['photo_url']) && $data['photo_url']->isValid()) {
+            $photoUrlPath = $data['photo_url']->store('assets/series', 'public');
+            
+            $data['photo_url'] = $photoUrlPath;
+        }
+
+        return self::create($data);
+    }
 }

@@ -23,5 +23,5 @@ Route::middleware('auth')->group(function() {
 
     Route::post('/logout', LogoutController::class);
 
-    Route::post('/link', [LinkController::class, 'store']);
+    Route::post('/link', [LinkController::class, 'store'])->middleware('auth')->name('link');
 });

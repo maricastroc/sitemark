@@ -6,6 +6,7 @@ import { AddLinkModal } from '@/Components/AddLinkModal';
 import * as Dialog from '@radix-ui/react-dialog';
 import { useState } from 'react';
 import { ActionButton } from '@/Components/ActionButton';
+import { Head } from '@inertiajs/react';
 
 interface DashboardProps {
   links: {
@@ -19,12 +20,14 @@ interface DashboardProps {
 
 export default function Dashboard({ links }: DashboardProps) {
   const [isAddLinkModalOpen, setIsAddLinkModalOpen] = useState(false);
-console.log(links)
+
   const csrfToken = (
     document.head.querySelector('meta[name="csrf-token"]') as HTMLMetaElement
   )?.content;
 
   return (
+    <>
+    <Head title="Dashboard" />
     <div className="flex flex-col items-center w-full h-screen p-10 bg-background-primary">
       <img src={Logo} />
 
@@ -74,5 +77,6 @@ console.log(links)
         </div>
       </div>
     </div>
+    </>
   );
 }

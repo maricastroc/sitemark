@@ -7,16 +7,18 @@ import { notyf } from '@/libs/notyf';
 import { Label } from './Label';
 import { PrimaryButton } from './PrimaryButton';
 import { PhotoInput } from './PhotoInput';
+import { SelectInput } from './SelectInput';
+import { Error } from './Error';
 
 interface AddLinkFormData {
-  title: string;
+  name: string;
   platform: string;
   url: string;
   photo_url: File | null;
 }
 
 interface AddLinkFormErrors {
-  title?: string;
+  name?: string;
   platform?: string;
   url?: string;
   photo_url?: string;
@@ -32,7 +34,7 @@ export function AddLinkModal({ onClose }: AddLinkModalProps) {
   const [photoPreview, setphotoPreview] = useState<string | null>(null);
 
   const [data, setData] = useState<AddLinkFormData>({
-    title: '',
+    name: '',
     platform: '',
     url: '',
     photo_url: null
@@ -56,7 +58,7 @@ export function AddLinkModal({ onClose }: AddLinkModalProps) {
   
     const formData = new FormData();
     
-    formData.append('name', data.title);
+    formData.append('name', data.name);
     formData.append('platform', data.platform);
     formData.append('url', data.url);
 
@@ -89,8 +91,8 @@ export function AddLinkModal({ onClose }: AddLinkModalProps) {
       if (axios.isAxiosError(error)) {
         setErrors(error.response?.data.errors || {});
   
-        if (error.response?.data.errors?.message) {
-          notyf?.error(error.response?.data.errors?.message);
+        if (error.response?.data?.message) {
+          notyf?.error(error.response?.data?.message);
         }
       } else {
         console.error('Error:', error);
@@ -135,30 +137,16 @@ export function AddLinkModal({ onClose }: AddLinkModalProps) {
                   label="Name"
                   name='name'
                   type="text"
-                  placeholder="Link Title"
-                  value={data.title}
-                  onChange={(e) => setData({ ...data, title: e.target.value })}
-                  error={errors?.title}
+                  placeholder="Link name"
+                  value={data.name}
+                  onChange={(e) => setData({ ...data, name: e.target.value })}
+                  error={errors?.name}
                 />
 
                 <div className="flex flex-col items-start mt-3">
                   <Label content="Streaming Platform" />
-                  <select
-                    name="platform"
-                    className="w-full border-2 border-zinc-800 select bg-background-secondary"
-                    value={data.platform}
-                    onChange={(e) => setData({ ...data, platform: e.target.value })}  // Atualiza o estado com o valor selecionado
-                  >
-                    <option disabled value="">
-                      Streaming Platform
-                    </option>
-                    <option value="Prime Video">Prime Video</option>
-                    <option value="MAX">MAX</option>
-                    <option value="Netflix">Netflix</option>
-                    <option value="Paramount">Paramount</option>
-                    <option value="Disney+">Disney+</option>
-                    <option value="Apple TV">Apple TV</option>
-                  </select>
+                  <SelectInput onChange={(e) => setData({ ...data, platform: e.target.value })} value={data.platform} />
+                  {errors?.platform && <Error content={errors.platform} />}
                 </div>
 
                 <InputField

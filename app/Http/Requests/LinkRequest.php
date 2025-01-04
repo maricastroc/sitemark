@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateLinkRequest extends FormRequest
+class LinkRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class UpdateLinkRequest extends FormRequest
             'url' => ['required', 'url', 'min:3'],
             'name' => ['required', 'string', 'min:3'],
             'platform' => ['required', 'string', 'min:3'],
-            'avatar_url' => ['string'],
+            'photo_url' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Validação da imagem
         ];
     }
 }

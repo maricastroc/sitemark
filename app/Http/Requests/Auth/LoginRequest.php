@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Hash;
 
 class LoginRequest extends FormRequest
 {
@@ -27,20 +25,5 @@ class LoginRequest extends FormRequest
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
         ];
-    }
-
-    /**
-     * Validate user for system's authentication.
-     */
-    public function attempt(): bool {
-        $user = User::where('email', $this->email)->first();
-
-        if ($user && Hash::check($this->password, $user->password)) {
-            auth()->login($user);
-
-            return true;
-        }
-
-        return false;
     }
 }
