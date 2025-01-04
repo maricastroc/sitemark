@@ -23,6 +23,8 @@ Route::middleware('auth')->group(function() {
 
     Route::post('/logout', LogoutController::class);
 
+    Route::get('/links/{link}', [LinkController::class, 'show']);
+
     Route::post('/links', [LinkController::class, 'store']);
 
     Route::put('/links/{link}', [LinkController::class, 'update']);

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LinkRequest;
 use App\Models\Link;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class LinkController extends Controller
 {
@@ -37,7 +37,15 @@ class LinkController extends Controller
      */
     public function show(Link $link)
     {
-        //
+        try {
+            return response()->json([
+                'link' => $link,
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Link not found',
+            ], 404);
+        }
     }
 
     /**

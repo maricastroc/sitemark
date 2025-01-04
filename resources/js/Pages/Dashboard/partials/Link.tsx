@@ -44,7 +44,7 @@ export function Link({ link }: LinkComponentProps) {
               <PencilSimpleLine size={18} />
             </button>
           </Dialog.Trigger>
-          <LinkFormModal isEdit link={link}  onClose={() => setIsEditLinkModalFormOpen(false)} />
+          <LinkFormModal isEdit linkId={link.id}  onClose={() => setIsEditLinkModalFormOpen(false)} />
         </Dialog.Root>
         <button className="flex items-center justify-center p-2 text-content-primary">
           <TrashSimple size={18} />

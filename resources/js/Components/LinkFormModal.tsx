@@ -28,10 +28,10 @@ interface LinkFormModalErrors {
 interface LinkFormModalProps {
   onClose: () => void;
   isEdit: boolean
-  link?: LinkProps | null
+  linkId?: number
 }
 
-export function LinkFormModal({ onClose, isEdit, link }: LinkFormModalProps) {
+export function LinkFormModal({ onClose, isEdit, linkId }: LinkFormModalProps) {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
@@ -39,12 +39,12 @@ export function LinkFormModal({ onClose, isEdit, link }: LinkFormModalProps) {
   const [isLoading, setIsLoading] = useState(false)
 
   const [data, setData] = useState<LinkFormModalData>({
-    name: link ? link.name : '',
-    platform: link ? link.platform : '',
-    url: link ? link.url : '',
+    name: '',
+    platform: '',
+    url: '',
     photo_url: null
   });
-  console.log(link, data)
+
   const [errors, setErrors] = useState<LinkFormModalErrors>({});
 
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,7 +123,7 @@ export function LinkFormModal({ onClose, isEdit, link }: LinkFormModalProps) {
     try {
       setIsLoading(true)
       
-      const response = await axios.post(`links/${link?.id}`, formData, {
+      const response = await axios.post(`links/${linkId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -155,11 +155,31 @@ export function LinkFormModal({ onClose, isEdit, link }: LinkFormModalProps) {
   };
 
   useEffect(() => {
-    if (link) {
-      setPhotoPreview(`storage/${link.photo_url}`)
-      setData({ ...data, name: link.name, platform: link.platform, url: link.url })
+    const getLink = async () => { 
+      try {
+        const response = await axios.get(`links/${linkId}`);
+  
+        if (response?.data?.link) {
+          const link = response?.data?.link
+
+          setPhotoPreview(`storage/${link.photo_url}`)
+          setData({ ...data, name: link.name, platform: link.platform, url: link.url })
+        }
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          if (error.response?.data.message) {
+            notyf?.error(error.response?.data.message);
+          }
+        } else {
+          console.error('Error:', error);
+        }
+      }
+    };
+    
+    if (linkId) {
+      getLink()
     }
-  }, [link])
+  }, [linkId])
 
   return (
     <Dialog.Portal>
