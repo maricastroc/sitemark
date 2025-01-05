@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -61,6 +60,27 @@ class User extends Authenticatable
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+        ]);
+    }
+
+    /**
+     * Update user with a new photo (if provided).
+     */
+    public static function updateWithPhoto(array $data, User $user)
+    {
+        if (isset($data['avatar_url']) && $data['avatar_url']->isValid()) {
+            $photoUrlPath = $data['avatar_url']->store('assets/users', 'public');
+            $data['avatar_url'] = $photoUrlPath;
+        } else {
+            $data['avatar_url'] = $data['avatar_url'] ?? $user->avatar_url;
+        }
+    
+        return $user->update([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'bio' => $data['bio'],
+            'avatar_url' => $data['avatar_url'],
+            'password' => isset($data['password']) ? Hash::make($data['password']) : $user->password, // Atualiza a senha apenas se fornecida
         ]);
     }
 

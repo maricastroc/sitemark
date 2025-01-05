@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LinkController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -22,6 +23,10 @@ Route::middleware('auth')->group(function() {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::post('/logout', LogoutController::class);
+
+    Route::get('/profile', [UserController::class, 'index'])->name('user');
+
+    Route::put('/profile/{user}', [UserController::class, 'update']);
 
     Route::get('/links/{link}', [LinkController::class, 'show']);
 

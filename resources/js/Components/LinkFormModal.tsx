@@ -220,6 +220,7 @@ export function LinkFormModal({ onClose, isEdit, linkId }: LinkFormModalProps) {
                   inputFileRef={
                     inputFileRef as React.RefObject<HTMLInputElement>
                   }
+                  isLoading={isLoading}
                 />
 
                 <InputField

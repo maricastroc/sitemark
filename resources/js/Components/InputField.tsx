@@ -10,6 +10,7 @@ export const InputField = ({
   onChange,
   placeholder,
   error,
+  isProfileScreen = false,
   isLoading = false
 }: {
   label: string;
@@ -20,6 +21,7 @@ export const InputField = ({
   placeholder: string;
   error?: string;
   isLoading?: boolean;
+  isProfileScreen?: boolean;
 }) => (
   <div className="flex flex-col items-start mt-3">
     <Label content={label} />
@@ -30,7 +32,7 @@ export const InputField = ({
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      className="w-full text-gray-100 input input-bordered bg-background-secondary"
+      className={`w-full text-gray-100 input bg-background-secondary ${!isProfileScreen && 'input-bordered'}`}
     />
     {error && <Error content={error} />}
   </div>

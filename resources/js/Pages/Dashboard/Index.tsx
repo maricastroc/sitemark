@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { ActionButton } from '@/Components/ActionButton';
 import { Head } from '@inertiajs/react';
 import { LinkProps } from '@/types/link';
+import { ActionLink } from '@/Components/ActionLink';
 
 interface DashboardProps {
   links: LinkProps[];
@@ -61,9 +62,9 @@ export default function Dashboard({ links }: DashboardProps) {
             <ActionButton isActive>
               <List />
             </ActionButton>
-            <ActionButton isActive={false}>
+            <ActionLink href="/profile" isActive={false}>
               <UserCircle />
-            </ActionButton>
+            </ActionLink>
             <form action="/logout" method="POST">
               <input type="hidden" name="_token" value={csrfToken} />
               <ActionButton isActive={false}>
