@@ -7,7 +7,7 @@ import { notyf } from '@/libs/notyf';
 import { InputField } from '@/Components/InputField';
 import { Label } from '@/Components/Label';
 import { Error } from '@/Components/Error';
-import Layout from '../Layouts/AuthLayout';
+import AuthLayout from '../Layouts/AuthLayout';
 
 interface ProfileProps {
   user: UserProps;
@@ -131,8 +131,8 @@ export default function Profile({ user }: ProfileProps) {
   }, [user]);
 
   return (
-    <Layout title="Profile" url="/profile">
-      <div className="flex flex-col">
+    <AuthLayout title="Profile" url="/profile">
+      <div className="flex flex-col h-screen mt-10">
         <div className="flex flex-col w-full mb-3">
           <div className="flex items-center justify-between">
             <h2 className="relative font-black text-heading-small text-content-primary">
@@ -148,7 +148,7 @@ export default function Profile({ user }: ProfileProps) {
           </div>
         </div>
 
-        <div className="flex flex-col w-full overflow-y-scroll lg:max-h-[60vh]">
+        <div className="flex flex-col w-full overflow-y-scroll lg:max-h-[50vh]">
           <form onSubmit={handleUpdateProfile}>
             <div className="w-full md:shadow-xl lg:pr-3">
               <div className="flex flex-col gap-2 py-3">
@@ -253,6 +253,6 @@ export default function Profile({ user }: ProfileProps) {
           </form>
         </div>
       </div>
-    </Layout>
+    </AuthLayout>
   );
 }

@@ -10,7 +10,7 @@ interface LayoutProps {
   url: string;
 }
 
-export default function Layout({ title, children, url }: LayoutProps) {
+export default function AuthLayout({ title, children, url }: LayoutProps) {
   const csrfToken = (
     document.head.querySelector('meta[name="csrf-token"]') as HTMLMetaElement
   )?.content;
