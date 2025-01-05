@@ -24,10 +24,16 @@ export default function Layout({ title, children, url }: LayoutProps) {
         {children}
 
         <div className="flex items-center justify-center w-full gap-3 mt-10">
-          <ActionButton isActive={url === '/'} onClick={() => window.location.href = '/'}>
+          <ActionButton
+            isActive={url === '/'}
+            onClick={() => (window.location.href = '/')}
+          >
             <List />
           </ActionButton>
-          <ActionButton isActive={url === '/profile'} onClick={() => window.location.href = '/profile'}>
+          <ActionButton
+            isActive={url === '/profile'}
+            onClick={() => (window.location.href = '/profile')}
+          >
             <UserCircle />
           </ActionButton>
           <form action="/logout" method="POST">

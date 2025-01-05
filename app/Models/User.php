@@ -68,19 +68,23 @@ class User extends Authenticatable
      */
     public static function updateWithPhoto(array $data, User $user)
     {
+        if (isset($data['new_password'])) {
+            $data['new_password'] = Hash::make($data['new_password']);
+        }
+
         if (isset($data['avatar_url']) && $data['avatar_url']->isValid()) {
             $photoUrlPath = $data['avatar_url']->store('assets/users', 'public');
             $data['avatar_url'] = $photoUrlPath;
         } else {
             $data['avatar_url'] = $data['avatar_url'] ?? $user->avatar_url;
         }
-    
+
         return $user->update([
             'name' => $data['name'],
             'email' => $data['email'],
             'bio' => $data['bio'],
             'avatar_url' => $data['avatar_url'],
-            'password' => isset($data['password']) ? Hash::make($data['password']) : $user->password, // Atualiza a senha apenas se fornecida
+            'password' => $data['new_password'] ?? $user->password,
         ]);
     }
 

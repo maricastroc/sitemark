@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
 class UserRequest extends FormRequest
@@ -22,12 +23,36 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'email' => ['required', 'string', 'email'],
-            'password' => ['nullable', 'string', Password::defaults()],
             'name' => ['required', 'string'],
             'bio' => ['nullable', 'string'],
             'avatar_url' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
+
+        if ($this->filled('old_password')) {
+            $rules['old_password'] = ['required', function ($attribute, $value, $fail) {
+                $user = auth()->user();
+
+                if (!Hash::check($value, $user->password)) {
+                    return $fail('The old password is incorrect.');
+                }
+            }];
+
+            $rules['new_password'] = ['required', 'string', Password::defaults()];
+        }
+
+        if ($this->filled('new_password')) {
+            $rules['new_password'] = ['required', 'string', Password::defaults()];
+            $rules['old_password'] = ['required', function ($attribute, $value, $fail) {
+                $user = auth()->user();
+
+                if (!Hash::check($this->old_password, $user->password)) {
+                    return $fail('The old password is incorrect.');
+                }
+            }];
+        }
+
+        return $rules;
     }
 }

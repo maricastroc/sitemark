@@ -18,7 +18,7 @@ export const PhotoInput = ({
   inputFileRef,
   isProfileScreen = false,
   withMarginTop = true,
-  isLoading = false,
+  isLoading = false
 }: PhotoInputProps) => {
   return (
     <div
