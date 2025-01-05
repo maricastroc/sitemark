@@ -25,7 +25,7 @@ class LinkRequest extends FormRequest
             'url' => ['required', 'url', 'min:3'],
             'name' => ['required', 'string', 'min:3'],
             'platform' => ['required', 'string', 'min:3'],
-            'photo_url' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Validação da imagem
+            'photo_url' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
     }
 }

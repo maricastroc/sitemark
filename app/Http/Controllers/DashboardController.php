@@ -2,14 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Link;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
+    use AuthorizesRequests;
+
+    /**
+     * Display a listing of the resource.
+     */
     public function index(Request $request)
     {
         $user = $request->user();
+
+        $this->authorize('viewAny', Link::class);
 
         $links = $user->links()->orderBy('display_order', 'asc')->get();
 

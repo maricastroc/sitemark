@@ -32,7 +32,7 @@ class Link extends Model
         $data['user_id'] = $userId;
 
         $maxOrder = self::where('user_id', $userId)->max('display_order');
-        
+
         $data['display_order'] = $maxOrder !== null ? $maxOrder + 1 : 0;
 
         if (isset($data['photo_url']) && $data['photo_url']->isValid()) {
@@ -91,5 +91,10 @@ class Link extends Model
             $this->update(['display_order' => $nextLink->display_order]);
             $nextLink->update(['display_order' => $currentOrder]);
         }
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

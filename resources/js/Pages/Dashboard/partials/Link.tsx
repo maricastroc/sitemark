@@ -59,7 +59,7 @@ export function Link({ link }: LinkComponentProps) {
   };
 
   return (
-    <div className="gap-3 w-full overflow-x-auto lg:overflow-x-hidden lg:max-w-[60rem] flex">
+    <div className="flex gap-3 overflow-x-auto lg:overflow-x-hidden w-full lg:max-w-[60rem]">
       <div className="flex items-center gap-3 text-content-primary">
         <button
           onClick={handleMoveUp}
@@ -76,14 +76,14 @@ export function Link({ link }: LinkComponentProps) {
           <ArrowDown size={20} />
         </button>
       </div>
-      <div className="flex items-center justify-between gap-4 p-4 rounded-lg bg-background-secondary">
-        <div className="flex items-center flex-grow w-screen gap-3">
+      <div className="flex items-center justify-between flex-grow gap-4 p-4 rounded-lg bg-background-secondary">
+        <div className="flex items-center gap-3">
           <img
             className="w-[3rem] h-[3rem] rounded-md"
             src={`storage/${link.photo_url}`}
             alt=""
           />
-          <div className="flex flex-col w-full gap-1">
+          <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2">
               <h2 className="font-bold text-label-large text-content-primary">
                 {link.name}
@@ -97,7 +97,7 @@ export function Link({ link }: LinkComponentProps) {
               </span>
             </div>
 
-            <p className="max-w-[90%] lg:max-w-[95%] overflow-hidden truncate whitespace-nowrap text-paragraph-medium">
+            <p className="max-w-[90%] lg:max-w-[32rem] overflow-hidden truncate whitespace-nowrap text-paragraph-medium">
               {link.url}
             </p>
           </div>

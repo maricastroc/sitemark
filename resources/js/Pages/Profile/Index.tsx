@@ -1,5 +1,4 @@
 import Logo from '/public/assets/logo.svg';
-import { Link } from './partials/Link';
 import { LogOut, UserCircle, List } from 'iconoir-react';
 import { PlusCircle } from 'phosphor-react';
 import { LinkFormModal } from '@/Components/LinkFormModal';
@@ -30,7 +29,7 @@ export default function Dashboard({ links }: DashboardProps) {
           <div className="flex flex-col w-full">
             <div className="flex items-center justify-between">
               <h2 className="relative font-black text-heading-small text-content-primary">
-                Links
+                Profile
                 <span className="absolute bottom-0 left-0 w-1/3 h-0.5 bg-accent-orange"></span>
               </h2>
               <Dialog.Root open={isLinkFormModalOpen}>
@@ -50,11 +49,6 @@ export default function Dashboard({ links }: DashboardProps) {
               </Dialog.Root>
             </div>
 
-            <div className="flex flex-col items-center gap-3 mt-5">
-              {links?.map((link) => {
-                return <Link key={link.id} link={link} />;
-              })}
-            </div>
           </div>
 
           <div className="flex items-center justify-center w-full gap-3 mt-10">

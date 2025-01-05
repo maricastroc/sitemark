@@ -5,15 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LinkRequest;
 use App\Models\Link;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class LinkController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(LinkRequest $request)
     {
         try {
+            $this->authorize('create', Link::class);
+
             $userId = auth()->id();
             
             $data = $request->validated();
@@ -38,6 +43,8 @@ class LinkController extends Controller
     public function show(Link $link)
     {
         try {
+            $this->authorize('view', $link);
+
             return response()->json([
                 'link' => $link,
             ]);
@@ -53,6 +60,8 @@ class LinkController extends Controller
      */
     public function update(LinkRequest $request, Link $link)
     {
+        $this->authorize('update', $link);
+
         $data = $request->validated();
 
         Link::updateWithPhoto($link, $data);
