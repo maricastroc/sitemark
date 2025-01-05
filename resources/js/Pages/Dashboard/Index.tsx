@@ -23,7 +23,7 @@ export default function Dashboard({ links }: DashboardProps) {
   return (
     <>
       <Head title="Dashboard" />
-      <div className="flex flex-col items-center w-full h-screen p-10 lg:overflow-y-hidden bg-background-primary">
+      <div className="flex flex-col items-center w-full h-screen p-10 bg-background-primary">
         <img src={Logo} />
 
         <div className="w-full max-w-[50rem] mt-8 flex h-screen flex-col justify-between">
@@ -50,7 +50,7 @@ export default function Dashboard({ links }: DashboardProps) {
               </Dialog.Root>
             </div>
 
-            <div className="flex flex-col items-center gap-5 mt-1">
+            <div className="flex flex-col items-center gap-3 mt-5">
               {links?.map((link) => {
                 return <Link key={link.id} link={link} />;
               })}

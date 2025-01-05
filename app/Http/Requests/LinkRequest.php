@@ -22,9 +22,9 @@ class LinkRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'url' => ['nullable', 'url', 'min:3'],
-            'name' => ['nullable', 'string', 'min:3'],
-            'platform' => ['nullable', 'string', 'min:3'],
+            'url' => ['required', 'url', 'min:3'],
+            'name' => ['required', 'string', 'min:3'],
+            'platform' => ['required', 'string', 'min:3'],
             'photo_url' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Validação da imagem
         ];
     }

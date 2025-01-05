@@ -28,4 +28,10 @@ Route::middleware('auth')->group(function() {
     Route::post('/links', [LinkController::class, 'store']);
 
     Route::put('/links/{link}', [LinkController::class, 'update']);
+
+    Route::patch('/links/{link}/up', [LinkController::class, 'moveUp']);
+
+    Route::patch('/links/{link}/down', [LinkController::class, 'moveDown']);
+
+    Route::delete('/links/{link}', [LinkController::class, 'destroy']);
 });

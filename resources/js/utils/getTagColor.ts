@@ -1,11 +1,11 @@
 export function getTagColor(platform: string) {
-  console.log(platform)
+  console.log(platform);
   switch (platform) {
     case 'Prime Video':
       return 'bg-accent-blue';
     case 'Disney+':
       return 'bg-accent-green';
-    case 'MAX':
+    case 'max':
       return 'bg-accent-purple';
     case 'Netflix':
       return 'bg-accent-orange';

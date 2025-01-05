@@ -21,7 +21,7 @@ export const SelectInput = forwardRef<HTMLSelectElement, SelectInputProps>(
           Select a platform...
         </option>
         <option value="Prime Video">Prime Video</option>
-        <option value="MAX">MAX</option>
+        <option value="max">max</option>
         <option value="Netflix">Netflix</option>
         <option value="Paramount">Paramount</option>
         <option value="Disney+">Disney+</option>

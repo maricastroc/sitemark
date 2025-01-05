@@ -19,6 +19,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->string('platform');
+            $table->unsignedTinyInteger('display_order')->default(0);
             $table->string('url');
             $table->string('name');
             $table->string('photo_url')->nullable();

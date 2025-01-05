@@ -69,6 +69,55 @@ class LinkController extends Controller
      */
     public function destroy(Link $link)
     {
-        //
+        try {
+            $link->delete();
+    
+            return response()->json([
+                'redirect' => route('dashboard'),
+                'message' => 'Link successfully deleted!',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to delete link. Please try again later.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function moveUp(Link $link)
+    {
+        try {
+            $link->moveUp();
+
+            return response()->json([
+                'redirect' => route('dashboard'),
+                'message' => 'Link moved up successfully!',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to move link up. Please try again later.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Move the specified link one position down.
+     */
+    public function moveDown(Link $link)
+    {
+        try {
+            $link->moveDown();
+
+            return response()->json([
+                'redirect' => route('dashboard'),
+                'message' => 'Link moved down successfully!',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to move link down. Please try again later.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }
