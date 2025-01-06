@@ -1,6 +1,7 @@
 import {
   ArrowDown,
   ArrowUp,
+  Copy,
   PencilSimpleLine,
   TrashSimple
 } from 'phosphor-react';
@@ -15,9 +16,10 @@ import { notyf } from '@/libs/notyf';
 
 interface LinkComponentProps {
   link: LinkProps;
+  isPublic?: boolean;
 }
 
-export function Link({ link }: LinkComponentProps) {
+export function Link({ link, isPublic = false }: LinkComponentProps) {
   const [isEditLinkModalFormOpen, setIsEditLinkModalFormOpen] = useState(false);
 
   const [isDeleteLinkModalOpen, setIsDeleteLinkModalOpen] = useState(false);
@@ -58,9 +60,19 @@ export function Link({ link }: LinkComponentProps) {
     }
   };
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(link.url).then(() => {
+      notyf?.success('URL copiada para a área de transferência!');
+    }).catch(err => {
+      console.error('Erro ao copiar a URL: ', err);
+      notyf?.error('Não foi possível copiar a URL.');
+    });
+  }
+
   return (
     <div className="flex gap-3 overflow-x-auto lg:overflow-x-hidden w-full lg:max-w-[60rem]">
-      <div className="flex items-center gap-3 text-content-primary">
+      {!isPublic && (
+        <div className="flex items-center gap-3 text-content-primary">
         <button
           onClick={handleMoveUp}
           className={`flex items-center justify-center transition-all duration-100 disabled:text-content-tertiary disabled:cursor-not-allowed hover:text-accent-orange`}
@@ -76,6 +88,7 @@ export function Link({ link }: LinkComponentProps) {
           <ArrowDown size={20} />
         </button>
       </div>
+      )}
       <div className="flex items-center justify-between flex-grow gap-4 p-4 rounded-lg bg-background-secondary">
         <div className="flex items-center gap-3">
           <img
@@ -97,13 +110,19 @@ export function Link({ link }: LinkComponentProps) {
               </span>
             </div>
 
-            <p className="max-w-[90%] lg:max-w-[32rem] overflow-hidden truncate whitespace-nowrap text-paragraph-medium">
-              {link.url}
-            </p>
+            <div className='flex gap-1'>
+              <p className="max-w-[90%] lg:max-w-[32rem] overflow-hidden truncate whitespace-nowrap text-paragraph-medium">
+                {link.url}
+              </p>
+              <button onClick={copyToClipboard}>
+                <Copy size={18} className='transition-all duration-100 text-content-primary hover:text-accent-orange' />
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-1">
+        {!isPublic && (
+          <div className="flex items-center gap-1">
           <Dialog.Root open={isEditLinkModalFormOpen}>
             <Dialog.Trigger asChild>
               <button
@@ -134,6 +153,7 @@ export function Link({ link }: LinkComponentProps) {
             />
           </Dialog.Root>
         </div>
+        )}
       </div>
     </div>
   );

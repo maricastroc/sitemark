@@ -9,7 +9,6 @@ import { PrimaryButton } from './PrimaryButton';
 import { PhotoInput } from './PhotoInput';
 import { SelectInput } from './SelectInput';
 import { Error } from './Error';
-import { LinkProps } from '@/types/link';
 
 interface LinkFormModalData {
   name: string;

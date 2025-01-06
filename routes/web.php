@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LinkController;
+use App\Http\Controllers\UrlController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -39,4 +40,8 @@ Route::middleware('auth')->group(function() {
     Route::patch('/links/{link}/down', [LinkController::class, 'moveDown']);
 
     Route::delete('/links/{link}', [LinkController::class, 'destroy']);
+
+    Route::get('/{username}', [UrlController::class, 'index'])
+        ->where('username', '[a-zA-Z0-9._-]+')
+        ->name('user');
 });

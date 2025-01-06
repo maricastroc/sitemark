@@ -32,7 +32,7 @@ export const InputField = ({
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      className={`w-full text-gray-100 input bg-background-secondary ${!isProfileScreen && 'input-bordered'}`}
+      className={`focus:outline-0 focus:border-zinc-800 focus:ring-0 w-full text-gray-100 input bg-background-secondary ${!isProfileScreen && 'input-bordered'}`}
     />
     {error && <Error content={error} />}
   </div>

@@ -8,9 +8,14 @@ import AuthLayout from '../Layouts/AuthLayout';
 
 interface DashboardProps {
   links: LinkProps[];
+  user: {
+    name: string,
+    avatar_url: string,
+    username: string,
+  }
 }
 
-export default function Dashboard({ links }: DashboardProps) {
+export default function Dashboard({ links, user }: DashboardProps) {
   const [isLinkFormModalOpen, setIsLinkFormModalOpen] = useState(false);
 
   return (
@@ -18,29 +23,18 @@ export default function Dashboard({ links }: DashboardProps) {
       <div className="flex flex-col w-full h-screen mt-10 lg:max-w-[60rem]">
         <div className="flex items-center justify-between flex-grow">
           <h2 className="relative font-black text-heading-small text-content-primary">
-            Links
+            {`${user.name.split(" ")[0]}'s Links`}
             <span className="absolute bottom-0 left-0 w-1/3 h-0.5 bg-accent-orange"></span>
           </h2>
-          <Dialog.Root open={isLinkFormModalOpen}>
-            <Dialog.Trigger asChild>
-              <button
-                onClick={() => setIsLinkFormModalOpen(true)}
-                className="flex items-center gap-1 font-semibold text-label-medium text-accent-orange"
-              >
-                <PlusCircle className="text-accent-orange" size={18} />
-                Add new link
-              </button>
-            </Dialog.Trigger>
-            <LinkFormModal
-              isEdit={false}
-              onClose={() => setIsLinkFormModalOpen(false)}
-            />
-          </Dialog.Root>
+          <div className='flex items-end gap-2'>
+            <img className='border rounded-full h-7 w-7 border-content-primary' src={`storage/${user.avatar_url}`} alt="" />
+            <p className='text-sm'>@{user.username}</p>
+          </div>
         </div>
 
         <div className="flex flex-col flex-grow h-full gap-3 mt-5">
           {links?.map((link) => {
-            return <Link key={link.id} link={link} />;
+            return <Link isPublic key={link.id} link={link} />;
           })}
         </div>
       </div>

@@ -18,12 +18,12 @@ export default function AuthLayout({ title, children, url }: LayoutProps) {
   return (
     <>
       <Head title={title} />
-      <div className="max-h-[100vh] flex flex-col items-center w-full p-10 bg-background-primary lg:overflow-y-hidden">
+      <div className="lg:max-h-[100vh] flex flex-col items-center w-full p-10 bg-background-primary lg:overflow-y-hidden">
         <img src={Logo} />
 
         {children}
 
-        <div className="flex items-center justify-center w-full gap-3 mt-10">
+        <div className="flex items-center justify-center w-full gap-3 pb-10 mt-10 lg:pb-0">
           <ActionButton
             isActive={url === '/'}
             onClick={() => (window.location.href = '/')}

@@ -5,4 +5,5 @@ export interface UserProps {
   avatar_url: string;
   bio: string;
   password: string;
+  username?: string;
 }

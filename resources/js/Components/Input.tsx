@@ -10,7 +10,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       <input
         ref={ref}
         onChange={onChange}
-        className="w-full text-gray-100 border-2 text-md input border-zinc-800 bg-background-secondary"
+        className="w-full text-gray-100 border-2 focus:outline-none focus:border-none text-md input border-zinc-800 bg-background-secondary"
         {...props}
       />
     );

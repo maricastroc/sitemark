@@ -20,6 +20,7 @@ interface ProfileFormData {
   old_password?: string | undefined;
   new_password?: string | undefined;
   avatar_url: File | null;
+  username?: string;
 }
 
 interface ProfileFormErrors {
@@ -30,6 +31,7 @@ interface ProfileFormErrors {
   avatar_url?: string;
   old_password?: string;
   new_password?: string;
+  username?: string;
 }
 
 export default function Profile({ user }: ProfileProps) {
@@ -69,6 +71,7 @@ export default function Profile({ user }: ProfileProps) {
     formData.append('name', data.name);
     formData.append('bio', data.bio);
     formData.append('email', data.email);
+    formData.append('username', data.username || '');
 
     if (data.avatar_url) {
       formData.append('avatar_url', data.avatar_url);
@@ -89,6 +92,8 @@ export default function Profile({ user }: ProfileProps) {
           'Content-Type': 'multipart/form-data'
         }
       });
+
+      setErrors({})
 
       if (response?.data.message) {
         await new Promise((resolve) => {
@@ -121,7 +126,8 @@ export default function Profile({ user }: ProfileProps) {
         ...data,
         name: user.name,
         email: user.email,
-        bio: user.bio ?? ''
+        bio: user?.bio || '',
+        username: user?.username || ''
       });
 
       if (user.avatar_url) {
@@ -141,7 +147,7 @@ export default function Profile({ user }: ProfileProps) {
             </h2>
             <a
               href="/"
-              className="px-3 text-[14px] py-1.5 font-bold transition-all duration-200 rounded-xl text-accent-orange text-label-small bg-background-tertiary hover:bg-background-secondary brightness-100 hover:brightness-110"
+              className="px-3 py-1.5 font-bold transition-all duration-200 rounded-xl text-accent-orange text-label-small bg-background-tertiary hover:bg-background-secondary brightness-100 hover:brightness-110"
             >
               Go back
             </a>
@@ -185,6 +191,18 @@ export default function Profile({ user }: ProfileProps) {
                   value={data.email}
                   onChange={(e) => setData({ ...data, email: e.target.value })}
                   error={errors?.email}
+                  isLoading={isLoading}
+                />
+
+<InputField
+                  isProfileScreen
+                  label="Username"
+                  name="username"
+                  type="text"
+                  placeholder="myusername"
+                  value={data.username || ''}
+                  onChange={(e) => setData({ ...data, username: e.target.value })}
+                  error={errors?.username}
                   isLoading={isLoading}
                 />
 

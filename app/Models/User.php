@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'bio',
         'avatar_url',
+        'username',
     ];
 
     /**
@@ -84,6 +85,7 @@ class User extends Authenticatable
             'email' => $data['email'],
             'bio' => $data['bio'],
             'avatar_url' => $data['avatar_url'],
+            'username' => $data['username'],
             'password' => $data['new_password'] ?? $user->password,
         ]);
     }
