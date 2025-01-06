@@ -30,7 +30,8 @@ export default {
         'accent-green': '#44CB93',
         'accent-pink': '#dd61d0',
         'accent-purple': '#9D8AFE',
-        'border-primary': '#161412'
+        'border-primary': '#161412',
+        'border-secondary': '#383634',
       },
       fontFamily: {
         sans: ['Figtree', ...defaultTheme.fontFamily.sans]

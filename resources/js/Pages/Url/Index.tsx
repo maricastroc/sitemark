@@ -1,12 +1,8 @@
 import { Link } from '../../Components/Link';
-import { PlusCircle } from 'phosphor-react';
-import { LinkFormModal } from '@/Components/LinkFormModal';
-import * as Dialog from '@radix-ui/react-dialog';
-import { useState } from 'react';
 import { LinkProps } from '@/types/link';
 import AuthLayout from '../Layouts/AuthLayout';
 
-interface DashboardProps {
+interface UrlProps {
   links: LinkProps[];
   user: {
     name: string;
@@ -15,11 +11,9 @@ interface DashboardProps {
   };
 }
 
-export default function Dashboard({ links, user }: DashboardProps) {
-  const [isLinkFormModalOpen, setIsLinkFormModalOpen] = useState(false);
-
+export default function Url({ links, user }: UrlProps) {
   return (
-    <AuthLayout title="Dashboard" url="/">
+    <AuthLayout title="Url" url="/">
       <div className="flex flex-col w-full h-screen mt-10 lg:max-w-[60rem]">
         <div className="flex items-center justify-between flex-grow">
           <h2 className="relative font-black text-heading-small text-content-primary">
@@ -36,9 +30,13 @@ export default function Dashboard({ links, user }: DashboardProps) {
           </div>
         </div>
 
-        <div className="flex flex-col flex-grow h-full gap-3 mt-5">
+        <div className="lg:max-h-[55vh] flex flex-col flex-grow h-full gap-3 mt-5 lg:overflow-y-scroll">
           {links?.map((link) => {
-            return <Link isPublic key={link.id} link={link} />;
+            return (
+              <div key={link.id}>
+                <Link isPublic key={link.id} link={link} />
+              </div>
+            )
           })}
         </div>
       </div>

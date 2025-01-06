@@ -38,9 +38,13 @@ export default function Dashboard({ links }: DashboardProps) {
           </Dialog.Root>
         </div>
 
-        <div className="flex flex-col flex-grow h-full gap-3 mt-5">
+        <div className="lg:max-h-[55vh] flex flex-col flex-grow h-full gap-3 mt-5 lg:overflow-y-scroll">
           {links?.map((link) => {
-            return <Link key={link.id} link={link} />;
+            return (
+              <div key={link.id}>
+                <Link key={link.id} link={link} />
+              </div>
+            )
           })}
         </div>
       </div>

@@ -19,56 +19,38 @@ interface LinkComponentProps {
   isPublic?: boolean;
 }
 
+const updateLinkOrder = async (action: 'up' | 'down', linkId: number) => {
+  try {
+    const response = await axios.patch(`links/${linkId}/${action}`);
+
+    if (response.data.redirect) {
+      window.location.href = response.data.redirect;
+    }
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      if (error.response?.data.errors?.message) {
+        notyf?.error(error.response?.data.errors?.message);
+      }
+    } else {
+      console.error('Error:', error);
+    }
+  }
+};
+
 export function Link({ link, isPublic = false }: LinkComponentProps) {
   const [isEditLinkModalFormOpen, setIsEditLinkModalFormOpen] = useState(false);
-
+  
   const [isDeleteLinkModalOpen, setIsDeleteLinkModalOpen] = useState(false);
-
-  const handleMoveUp = async () => {
-    try {
-      const response = await axios.patch(`links/${link.id}/up`);
-
-      if (response.data.redirect) {
-        window.location.href = response.data.redirect;
-      }
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.data.errors?.message) {
-          notyf?.error(error.response?.data.errors?.message);
-        }
-      } else {
-        console.error('Error:', error);
-      }
-    }
-  };
-
-  const handleMoveDown = async () => {
-    try {
-      const response = await axios.patch(`links/${link.id}/down`);
-
-      if (response.data.redirect) {
-        window.location.href = response.data.redirect;
-      }
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.data.errors?.message) {
-          notyf?.error(error.response?.data.errors?.message);
-        }
-      } else {
-        console.error('Error:', error);
-      }
-    }
-  };
 
   const copyToClipboard = () => {
     navigator.clipboard
       .writeText(link.url)
       .then(() => {
-        notyf?.success('URL copiada para a área de transferência!');
+        notyf?.success('URL copied to clipboard!');
       })
       .catch((err) => {
-        console.error('Erro ao copiar a URL: ', err);
-        notyf?.error('Não foi possível copiar a URL.');
+        console.error('Unable to copy URL: ', err);
+        notyf?.error('Unable to copy URL.');
       });
   };
 
@@ -77,15 +59,15 @@ export function Link({ link, isPublic = false }: LinkComponentProps) {
       {!isPublic && (
         <div className="flex items-center gap-3 text-content-primary">
           <button
-            onClick={handleMoveUp}
-            className={`flex items-center justify-center transition-all duration-100 disabled:text-content-tertiary disabled:cursor-not-allowed hover:text-accent-orange`}
+            onClick={() => updateLinkOrder('up', link.id)}
+            className="flex items-center justify-center transition-all duration-100 disabled:text-content-tertiary disabled:cursor-not-allowed hover:text-accent-orange"
             disabled={!!link?.is_first}
           >
             <ArrowUp size={20} />
           </button>
           <button
-            onClick={handleMoveDown}
-            className={`flex items-center justify-center transition-all duration-100 disabled:text-content-tertiary disabled:cursor-not-allowed hover:text-accent-orange`}
+            onClick={() => updateLinkOrder('down', link.id)}
+            className="flex items-center justify-center transition-all duration-100 disabled:text-content-tertiary disabled:cursor-not-allowed hover:text-accent-orange"
             disabled={!!link?.is_last}
           >
             <ArrowDown size={20} />
@@ -113,9 +95,9 @@ export function Link({ link, isPublic = false }: LinkComponentProps) {
               </span>
             </div>
 
-            <div className="flex gap-1">
+            <div className="flex gap-1 max-w-[90%] lg:max-w-[32rem]">
               <a
-                className="transition-all duration-100 hover:text-content-primary max-w-[90%] lg:max-w-[32rem] overflow-hidden truncate whitespace-nowrap text-paragraph-medium"
+                className="overflow-hidden truncate transition-all duration-100 hover:text-content-primary whitespace-nowrap text-paragraph-medium"
                 href={link.url}
                 target="__blank"
               >
@@ -132,7 +114,7 @@ export function Link({ link, isPublic = false }: LinkComponentProps) {
         </div>
 
         {!isPublic && (
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 border-l-2 border-border-secondary ">
             <Dialog.Root open={isEditLinkModalFormOpen}>
               <Dialog.Trigger asChild>
                 <button
