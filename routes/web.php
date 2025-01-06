@@ -21,7 +21,7 @@ Route::middleware('guest')->group(function() {
 });
 
 Route::middleware('auth')->group(function() {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', DashboardController::class)->name('dashboard');
 
     Route::post('/logout', LogoutController::class);
 
@@ -41,7 +41,5 @@ Route::middleware('auth')->group(function() {
 
     Route::delete('/links/{link}', [LinkController::class, 'destroy']);
 
-    Route::get('/{username}', [UrlController::class, 'index'])
-        ->where('username', '[a-zA-Z0-9._-]+')
-        ->name('user');
+    Route::get('/{user:username}', UrlController::class);
 });

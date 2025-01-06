@@ -4,14 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    use AuthorizesRequests;
-
     /**
      * Display a listing of the resource.
      */

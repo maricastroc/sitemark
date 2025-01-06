@@ -5,12 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LinkRequest;
 use App\Models\Link;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class LinkController extends Controller
 {
-    use AuthorizesRequests;
-
     /**
      * Store a newly created resource in storage.
      */

@@ -93,7 +93,7 @@ export default function Profile({ user }: ProfileProps) {
         }
       });
 
-      setErrors({})
+      setErrors({});
 
       if (response?.data.message) {
         await new Promise((resolve) => {
@@ -194,14 +194,16 @@ export default function Profile({ user }: ProfileProps) {
                   isLoading={isLoading}
                 />
 
-<InputField
+                <InputField
                   isProfileScreen
                   label="Username"
                   name="username"
                   type="text"
                   placeholder="myusername"
                   value={data.username || ''}
-                  onChange={(e) => setData({ ...data, username: e.target.value })}
+                  onChange={(e) =>
+                    setData({ ...data, username: e.target.value })
+                  }
                   error={errors?.username}
                   isLoading={isLoading}
                 />

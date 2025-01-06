@@ -61,33 +61,36 @@ export function Link({ link, isPublic = false }: LinkComponentProps) {
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(link.url).then(() => {
-      notyf?.success('URL copiada para a área de transferência!');
-    }).catch(err => {
-      console.error('Erro ao copiar a URL: ', err);
-      notyf?.error('Não foi possível copiar a URL.');
-    });
-  }
+    navigator.clipboard
+      .writeText(link.url)
+      .then(() => {
+        notyf?.success('URL copiada para a área de transferência!');
+      })
+      .catch((err) => {
+        console.error('Erro ao copiar a URL: ', err);
+        notyf?.error('Não foi possível copiar a URL.');
+      });
+  };
 
   return (
     <div className="flex gap-3 overflow-x-auto lg:overflow-x-hidden w-full lg:max-w-[60rem]">
       {!isPublic && (
         <div className="flex items-center gap-3 text-content-primary">
-        <button
-          onClick={handleMoveUp}
-          className={`flex items-center justify-center transition-all duration-100 disabled:text-content-tertiary disabled:cursor-not-allowed hover:text-accent-orange`}
-          disabled={!!link?.is_first}
-        >
-          <ArrowUp size={20} />
-        </button>
-        <button
-          onClick={handleMoveDown}
-          className={`flex items-center justify-center transition-all duration-100 disabled:text-content-tertiary disabled:cursor-not-allowed hover:text-accent-orange`}
-          disabled={!!link?.is_last}
-        >
-          <ArrowDown size={20} />
-        </button>
-      </div>
+          <button
+            onClick={handleMoveUp}
+            className={`flex items-center justify-center transition-all duration-100 disabled:text-content-tertiary disabled:cursor-not-allowed hover:text-accent-orange`}
+            disabled={!!link?.is_first}
+          >
+            <ArrowUp size={20} />
+          </button>
+          <button
+            onClick={handleMoveDown}
+            className={`flex items-center justify-center transition-all duration-100 disabled:text-content-tertiary disabled:cursor-not-allowed hover:text-accent-orange`}
+            disabled={!!link?.is_last}
+          >
+            <ArrowDown size={20} />
+          </button>
+        </div>
       )}
       <div className="flex items-center justify-between flex-grow gap-4 p-4 rounded-lg bg-background-secondary">
         <div className="flex items-center gap-3">
@@ -110,12 +113,19 @@ export function Link({ link, isPublic = false }: LinkComponentProps) {
               </span>
             </div>
 
-            <div className='flex gap-1'>
-              <p className="max-w-[90%] lg:max-w-[32rem] overflow-hidden truncate whitespace-nowrap text-paragraph-medium">
+            <div className="flex gap-1">
+              <a
+                className="transition-all duration-100 hover:text-content-primary max-w-[90%] lg:max-w-[32rem] overflow-hidden truncate whitespace-nowrap text-paragraph-medium"
+                href={link.url}
+                target="__blank"
+              >
                 {link.url}
-              </p>
+              </a>
               <button onClick={copyToClipboard}>
-                <Copy size={18} className='transition-all duration-100 text-content-primary hover:text-accent-orange' />
+                <Copy
+                  size={18}
+                  className="transition-all duration-100 text-content-primary hover:text-accent-orange"
+                />
               </button>
             </div>
           </div>
@@ -123,36 +133,36 @@ export function Link({ link, isPublic = false }: LinkComponentProps) {
 
         {!isPublic && (
           <div className="flex items-center gap-1">
-          <Dialog.Root open={isEditLinkModalFormOpen}>
-            <Dialog.Trigger asChild>
-              <button
-                onClick={() => setIsEditLinkModalFormOpen(true)}
-                className="flex items-center justify-center p-2 transition-all duration-100 text-content-primary hover:text-accent-orange"
-              >
-                <PencilSimpleLine size={18} />
-              </button>
-            </Dialog.Trigger>
-            <LinkFormModal
-              isEdit
-              linkId={link.id}
-              onClose={() => setIsEditLinkModalFormOpen(false)}
-            />
-          </Dialog.Root>
-          <Dialog.Root open={isDeleteLinkModalOpen}>
-            <Dialog.Trigger asChild>
-              <button
-                onClick={() => setIsDeleteLinkModalOpen(true)}
-                className="flex items-center justify-center p-2 transition-all duration-100 text-content-primary hover:text-accent-orange"
-              >
-                <TrashSimple size={18} />
-              </button>
-            </Dialog.Trigger>
-            <DeleteLinkModal
-              onClose={() => setIsDeleteLinkModalOpen(false)}
-              linkId={link.id}
-            />
-          </Dialog.Root>
-        </div>
+            <Dialog.Root open={isEditLinkModalFormOpen}>
+              <Dialog.Trigger asChild>
+                <button
+                  onClick={() => setIsEditLinkModalFormOpen(true)}
+                  className="flex items-center justify-center p-2 transition-all duration-100 text-content-primary hover:text-accent-orange"
+                >
+                  <PencilSimpleLine size={18} />
+                </button>
+              </Dialog.Trigger>
+              <LinkFormModal
+                isEdit
+                linkId={link.id}
+                onClose={() => setIsEditLinkModalFormOpen(false)}
+              />
+            </Dialog.Root>
+            <Dialog.Root open={isDeleteLinkModalOpen}>
+              <Dialog.Trigger asChild>
+                <button
+                  onClick={() => setIsDeleteLinkModalOpen(true)}
+                  className="flex items-center justify-center p-2 transition-all duration-100 text-content-primary hover:text-accent-orange"
+                >
+                  <TrashSimple size={18} />
+                </button>
+              </Dialog.Trigger>
+              <DeleteLinkModal
+                onClose={() => setIsDeleteLinkModalOpen(false)}
+                linkId={link.id}
+              />
+            </Dialog.Root>
+          </div>
         )}
       </div>
     </div>
